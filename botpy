@@ -1,0 +1,37 @@
+from telethon.sync import TelegramClient, events, Button
+
+# Replace with your own values
+api_id = 25278277
+api_hash = 'a7ab9c15a8ddd010caadde511ecfa226'
+bot_token = '6687273355:AAG8nrkNfNLevmFM881dsKBiLHsJ3yVbhn8'
+
+with TelegramClient('session', api_id, api_hash) as client:
+    @client.on(events.NewMessage(pattern='/start'))
+    async def start(event):
+        await event.respond(
+            "مرحبا بك في بوت الرشق 🤍\nاختر أحد الخيارات:",
+            buttons=[
+                [Button.inline("الخدمات  ⚡", data="services")],
+            ]
+        )
+
+    @client.on(events.CallbackQuery(data="services"))
+    async def services(event):
+        await event.edit(
+            "اختر أحد الخدمات:",
+            buttons=[
+                [Button.inline("خدمة 1", data="service1")],
+                [Button.inline("خدمة 2", data="service2")],
+                # Add more service buttons here
+            ]
+        )
+
+    @client.on(events.CallbackQuery(data="service1"))
+    async def service1(event):
+        await event.edit("تم تنفيذ خدمة 1")
+
+    @client.on(events.CallbackQuery(data="service2"))
+    async def service2(event):
+        await event.edit("تم تنفيذ خدمة 2")
+
+    client.run_until_disconnected()
